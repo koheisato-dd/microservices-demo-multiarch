@@ -40,6 +40,7 @@ import org.apache.logging.log4j.Logger;
 
 public final class AdService {
 
+
   private static final Logger logger = LogManager.getLogger(AdService.class);
 
   @SuppressWarnings("FieldCanBeLocal")
@@ -115,6 +116,15 @@ public final class AdService {
         logger.log(Level.WARN, "GetAds Failed with status {}", e.getStatus());
         responseObserver.onError(e);
       }
+    }
+    private boolean shouldThrowRandomError() {
+      // 10%の確率でエラーをスローする
+      return new Random().nextInt(50) == 0;
+    }
+    
+    private void throwRandomError() {
+      Status status = Status.INTERNAL.withDescription("Error occurred");
+      throw status.asRuntimeException();
     }
   }
 
